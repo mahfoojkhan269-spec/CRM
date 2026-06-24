@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+:root {
+  /* Ledger palette: warm paper, deep ink, muted gold accent */
+  --paper: #f7f4ec;
+  --paper-raised: #fffdf8;
+  --ink: #1d2230;
+  --ink-soft: #565b6b;
+  --rule: #ddd6c3;
+  --gold: #a9762f;
+  --gold-soft: #f0e4cc;
+
+  /* Status colors */
+  --status-pending: #8a8478;
+  --status-pending-bg: #ece8dc;
+  --status-received: #1d6f6b;
+  --status-received-bg: #dcefed;
+  --status-processing: #2d5ea8;
+  --status-processing-bg: #dfe9f7;
+  --status-prepared: #6a4ba8;
+  --status-prepared-bg: #e7e0f5;
+  --status-filed: #2f7a3c;
+  --status-filed-bg: #e0f0e2;
+  --status-arn: #a9762f;
+  --status-arn-bg: #f0e4cc;
+  --status-closed: #6b6f78;
+  --status-closed-bg: #e8e7e3;
+  --overdue: #9b2c1f;
+  --overdue-bg: #f6dfd9;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-rule: var(--rule);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-fraunces);
+  --font-mono: var(--font-jetbrains);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), Arial, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+.font-data {
+  font-family: var(--font-mono), monospace;
+  font-feature-settings: "tnum" 1;
+}
+
+.ledger-rule {
+  border-color: var(--rule);
+}
+
+.stamp-overdue {
+  display: inline-block;
+  transform: rotate(-3deg);
+  border: 1.5px solid var(--overdue);
+  color: var(--overdue);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
