@@ -76,3 +76,32 @@ export async function createClientWithCycle(formData: FormData) {
 
   revalidatePath("/dashboard");
 }
+
+/**
+ * Logs a manually-triggered WhatsApp reminder for audit-trail purposes.
+ * The actual message is sent by staff clicking through a wa.me deep link
+ * (see ActionsMenu) - this just records that it happened. Once the
+ * Meta WhatsApp Cloud API is wired up (Priority 4), this same table will
+ * also receive the message_id and delivery status automatically.
+ */
+export async function logManualReminder(
+  clientId: string,
+  month: string,
+  reminderLabel: string
+) {
+  const { error } = await supabaseAdmin.from("notifications").insert({
+    client_id: clientId,
+    month,
+    reminder_type: "Manual Reminder",
+    delivered: false,
+    message_id: null,
+  });
+
+  if (error) throw new Error(error.message);
+  revalidatePath("/dashboard");
+
+  // reminderLabel is accepted for clarity in call sites/logging but the
+  // notifications table intentionally stores a constant "Manual Reminder"
+  // type so the partial unique index never blocks repeat manual sends.
+  void reminderLabel;
+}

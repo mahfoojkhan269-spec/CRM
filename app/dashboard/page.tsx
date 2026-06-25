@@ -14,6 +14,7 @@ type CycleRow = {
   status: string;
   arn_number: string | null;
   clients: {
+    id: string;
     client_name: string;
     gstin: string | null;
     mobile_number: string;
@@ -32,7 +33,7 @@ export default async function DashboardPage({
   const { data, error } = await supabaseAdmin
     .from("compliance_cycles")
     .select(
-      "id, month, due_date, status, arn_number, clients ( client_name, gstin, mobile_number )"
+      "id, month, due_date, status, arn_number, clients ( id, client_name, gstin, mobile_number )"
     )
     .order("due_date", { ascending: true });
 
@@ -128,7 +129,14 @@ export default async function DashboardPage({
                       )}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <ActionsMenu cycleId={row.id} />
+                      <ActionsMenu
+                        cycleId={row.id}
+                        clientId={row.clients?.id ?? ""}
+                        clientName={row.clients?.client_name ?? "this client"}
+                        mobileNumber={row.clients?.mobile_number ?? ""}
+                        month={row.month}
+                        dueDate={row.due_date}
+                      />
                     </td>
                   </tr>
                 );
