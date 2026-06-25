@@ -6,6 +6,7 @@ import FilterTabs from "@/components/FilterTabs";
 import SearchBar from "@/components/SearchBar";
 import AddClientForm from "@/components/AddClientForm";
 import LogoutButton from "@/components/LogoutButton";
+import StatsCards from "@/components/StatsCards";
 
 type CycleRow = {
   id: string;
@@ -56,6 +57,19 @@ export default async function DashboardPage({
     return true;
   });
 
+  const overdueCount = rows.filter((r) => isOverdue(r.due_date, r.status)).length;
+  const countByStatus = (status: string) => rows.filter((r) => r.status === status).length;
+
+  const stats = [
+    { label: "Total Cycles", count: rows.length, tone: "default" as const },
+    { label: "Pending Data", count: countByStatus("Pending Data"), tone: "warn" as const },
+    { label: "Data Received", count: countByStatus("Data Received"), tone: "default" as const },
+    { label: "Under Processing", count: countByStatus("Under Processing"), tone: "default" as const },
+    { label: "Prepared", count: countByStatus("Prepared"), tone: "default" as const },
+    { label: "Filed", count: countByStatus("Filed") + countByStatus("ARN Shared"), tone: "good" as const },
+    { label: "Overdue", count: overdueCount, tone: "overdue" as const },
+  ];
+
   return (
     <div className="min-h-screen bg-paper">
       <header className="border-b border-rule bg-paper-raised px-6 py-4 flex items-center justify-between">
@@ -69,6 +83,8 @@ export default async function DashboardPage({
       </header>
 
       <main className="p-6 max-w-7xl mx-auto space-y-5">
+        <StatsCards stats={stats} />
+
         <div className="flex flex-wrap items-center justify-between gap-3">
           <FilterTabs active={statusFilter} query={sp.q || ""} />
           <div className="flex items-center gap-3">
